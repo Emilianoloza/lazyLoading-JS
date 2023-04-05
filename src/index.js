@@ -1,3 +1,5 @@
+import { registerImage } from "./lazy";
+
 const minimum = 1;
 const maxium = 121; //valor sacado de la documentación de la API
 
@@ -10,7 +12,7 @@ const createImageNode = () =>{
     const image = document.createElement('img');
     image.className = 'mx-auto';
     image.width = '320';
-    image.src = `https://randomfox.ca/images/${random()}.jpg`;
+    image.dataset.src = `https://randomfox.ca/images/${random()}.jpg`;
 
     container.appendChild(image);
 
@@ -19,12 +21,20 @@ const createImageNode = () =>{
 
 const mountNode = document.getElementById('images');
 const addButton = document.getElementById('btnAdd');
+const clearButton = document.getElementById('btnClear');
 
 const addImage = () => {
     const newImage = createImageNode();
     mountNode.appendChild(newImage);
+    registerImage(newImage);
 };
 
-addButton.addEventListener('click', addImage);
+const cleanImages = () => {
+    [...mountNode.childNodes].forEach(child => {
+        child.remove();
+    }) 
+}
 
+addButton.addEventListener('click', addImage);
+clearButton.addEventListener('click', cleanImages);
 
